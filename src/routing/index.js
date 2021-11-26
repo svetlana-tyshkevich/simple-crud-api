@@ -1,7 +1,8 @@
+// import path from 'path';
 import url from 'url';
-import { db } from '../db.js';
 import { getResponse } from './getResponse.js';
 import { postResponse } from './postResponse.js';
+import { checkPath } from './validation.js';
 
 const requestListener = (req, res) => {
   let jsonString = '';
@@ -10,15 +11,18 @@ const requestListener = (req, res) => {
   })
 
   const urlParsed = url.parse(req.url, true);
-  let path = urlParsed.pathname;
+  let pathParts = urlParsed.path.substring(1).split('/');
+  // console.log(pathParts);
+  checkPath(pathParts, res); 
+
   let method = req.method;
 
   switch (method) {
     case 'GET':
-      getResponse(path, res);
+      getResponse(pathParts, res);
       break;
     case 'POST':
-     req.on('end', () => postResponse(path, jsonString, res));
+     req.on('end', () => postResponse(pathParts, jsonString, res));
       break;
 
     default:

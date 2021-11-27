@@ -3,7 +3,7 @@ import { db } from '../db.js';
 
 const postResponse = (path, requestBody, res) => {
   
-    const { name, age, hobbies } = JSON.parse(requestBody);
+    const { name, age, hobbies } = requestBody;
     const id = uuidv4();
 
     const newPerson = { id, name, age, hobbies };

@@ -3,6 +3,7 @@ import url from 'url';
 import { getResponse } from './getResponse.js';
 import { postResponse } from './postResponse.js';
 import { putResponse } from './putResponse.js';
+import { deleteResponse } from './deleteResponse.js';
 import { checkPath } from './validation.js';
 
 const requestListener = (req, res) => {
@@ -28,6 +29,10 @@ const requestListener = (req, res) => {
 
     case 'PUT':
       req.on('end', () => putResponse(pathParts, JSON.parse(jsonString), res));
+      break;
+
+    case 'DELETE':
+      req.on('end', () => deleteResponse(pathParts, res));
       break;
 
     default:

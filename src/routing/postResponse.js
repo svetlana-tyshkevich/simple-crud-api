@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { db } from '../db.js';
 
-const postResponse = (path, requestBody, res) => {
+const postResponse = (res, requestBody) => {
   
     const { name, age, hobbies } = requestBody;
     const id = uuidv4();

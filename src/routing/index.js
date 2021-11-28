@@ -1,6 +1,7 @@
 // import path from 'path';
 import url from 'url';
 import { getResponse } from './getResponse.js';
+import { getByIdResponse } from './getByIdResponse.js';
 import { postResponse } from './postResponse.js';
 import { putResponse } from './putResponse.js';
 import { deleteResponse } from './deleteResponse.js';
@@ -16,28 +17,35 @@ const requestListener = (req, res) => {
   let pathParts = urlParsed.path.substring(1).split('/');
   // console.log(pathParts);
   checkPath(pathParts, res);
+  const id = pathParts[1];
 
   let method = req.method;
 
   switch (method) {
     case 'GET':
-      getResponse(pathParts, res);
+      {
+        if (!id) getResponse(res);
+        else getByIdResponse(res, id);
+      }
       break;
     case 'POST':
-      req.on('end', () => postResponse(pathParts, JSON.parse(jsonString), res));
+      if (!id) req.on('end', () => postResponse(res, JSON.parse(jsonString)));
       break;
 
     case 'PUT':
-      req.on('end', () => putResponse(pathParts, JSON.parse(jsonString), res));
+      if (id)
+        req.on('end', () =>
+          putResponse(res, id, JSON.parse(jsonString)),
+        );
       break;
 
     case 'DELETE':
-      req.on('end', () => deleteResponse(pathParts, res));
+     if (id) req.on('end', () => deleteResponse(res, id));
       break;
 
     default:
       res.writeHead(404, { 'Content-Type': 'text/html' });
-      res.end('Wrong method');
+      res.end("This Page doesn't exist!");
       break;
   }
 };

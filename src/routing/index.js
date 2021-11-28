@@ -15,38 +15,36 @@ const requestListener = (req, res) => {
 
   const urlParsed = url.parse(req.url, true);
   let pathParts = urlParsed.path.substring(1).split('/');
-  // console.log(pathParts);
-  checkPath(pathParts, res);
+
   const id = pathParts[1];
 
   let method = req.method;
+  if (checkPath(pathParts, res)) {
+    switch (method) {
+      case 'GET':
+        {
+          if (!id) getResponse(res);
+          else getByIdResponse(res, id);
+        }
+        break;
+      case 'POST':
+        if (!id) req.on('end', () => postResponse(res, JSON.parse(jsonString)));
+        break;
 
-  switch (method) {
-    case 'GET':
-      {
-        if (!id) getResponse(res);
-        else getByIdResponse(res, id);
-      }
-      break;
-    case 'POST':
-      if (!id) req.on('end', () => postResponse(res, JSON.parse(jsonString)));
-      break;
+      case 'PUT':
+        if (id)
+          req.on('end', () => putResponse(res, id, JSON.parse(jsonString)));
+        break;
 
-    case 'PUT':
-      if (id)
-        req.on('end', () =>
-          putResponse(res, id, JSON.parse(jsonString)),
-        );
-      break;
+      case 'DELETE':
+        if (id) req.on('end', () => deleteResponse(res, id));
+        break;
 
-    case 'DELETE':
-     if (id) req.on('end', () => deleteResponse(res, id));
-      break;
-
-    default:
-      res.writeHead(404, { 'Content-Type': 'text/html' });
-      res.end("This Page doesn't exist!");
-      break;
+      default:
+        res.writeHead(404, { 'Content-Type': 'text/html' });
+        res.end("This Page doesn't exist!");
+        break;
+    }
   }
 };
 

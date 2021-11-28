@@ -173,7 +173,7 @@ describe('Scenario 3 - check for different users with identical info', () => {
     userId = response.body.id;
   });
 
-  test('should return empty array and code 200', async () => {
+  test('should return array length of 3 and code 200', async () => {
     const response = await request(app).get('/person');
     expect(response.status).toBe(200);
     expect(response.body.length).toBe(3);

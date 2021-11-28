@@ -2,10 +2,7 @@ import request from 'supertest';
 
 import { app } from './app.js';
 
-// beforeAll(done => {
-//   done()
-// })
-afterEach(() => {
+afterAll(() => {
   app.close();
 });
 

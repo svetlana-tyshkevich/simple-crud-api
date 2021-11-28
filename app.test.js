@@ -63,7 +63,7 @@ describe('Scenario 1', () => {
   });
 });
 
-describe('Scenario 2 - test DELETE request', () => {
+describe('Scenario 2 - validation tests', () => {
   let userId = '';
 
   test('should return error message and code 400 (wrong user info)', async () => {
@@ -114,6 +114,72 @@ describe('Scenario 2 - test DELETE request', () => {
     const response = await request(app).get(`/person/${userId.slice(5)}`);
     expect(response.status).toBe(400);
     expect(response.text).toBe("This user's ID is invalid");
+  });
+
+  test('should code 204', async () => {
+    const response = await request(app).delete(`/person/${userId}`);
+    expect(response.status).toBe(204);
+  });
+});
+
+describe('Scenario 3 - check for different users with identical info', () => {
+  let userId = '';
+
+  test('should return empty array and code 200', async () => {
+    const response = await request(app).get('/person');
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual([]);
+  });
+
+  test('should return new user and code 201', async () => {
+    const response = await request(app)
+      .post('/person')
+      .send({
+        name: 'Joey',
+        age: 30,
+        hobbies: ['dating', 'eating', 'howyoudoing'],
+      });
+    expect(response.status).toBe(201);
+    expect(response.body.name).toBe('Joey');
+    expect(response.body.age).toBe(30);
+    expect(response.body.hobbies).toEqual(['dating', 'eating', 'howyoudoing']);
+    userId = response.body.id;
+  });
+
+  test('should return new user and code 201', async () => {
+    const response = await request(app)
+      .post('/person')
+      .send({
+        name: 'Joey',
+        age: 30,
+        hobbies: ['dating', 'eating', 'howyoudoing'],
+      });
+    expect(response.status).toBe(201);
+    expect(response.body.name).toBe('Joey');
+    expect(response.body.age).toBe(30);
+    expect(response.body.hobbies).toEqual(['dating', 'eating', 'howyoudoing']);
+    userId = response.body.id;
+  });
+
+  test('should return new user and code 201', async () => {
+    const response = await request(app)
+      .post('/person')
+      .send({
+        name: 'Joey',
+        age: 30,
+        hobbies: ['dating', 'eating', 'howyoudoing'],
+      });
+    expect(response.status).toBe(201);
+    expect(response.body.name).toBe('Joey');
+    expect(response.body.age).toBe(30);
+    expect(response.body.hobbies).toEqual(['dating', 'eating', 'howyoudoing']);
+    userId = response.body.id;
+  });
+
+  test('should return empty array and code 200', async () => {
+    const response = await request(app).get('/person');
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBe(3);
   });
 });
 

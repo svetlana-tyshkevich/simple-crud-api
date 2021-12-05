@@ -1,0 +1,33 @@
+{
+  "name": "simple-crud-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start:dev": "nodemon server.js",
+    "start:prod": "webpack --mode production && node ./dist/bundle.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/svetlana-tyshkevich/simple-crud-api.git"
+  },
+  "author": "Svetlana Tyshkevich",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/svetlana-tyshkevich/simple-crud-api/issues"
+  },
+  "homepage": "https://github.com/svetlana-tyshkevich/simple-crud-api#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "jest": "^27.3.1",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.1.6",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1"
+  }
+}
